@@ -1,10 +1,10 @@
 const Users = require('@/models/Users')
-const Models = require('@/models/models')
+const Files = require('@/models/Files')
 const auth = require("@/middleware/auth")
 let express = require('express');
 let router = express.Router();
-var multer = require('multer')
-var storage = multer.diskStorage({
+let multer = require('multer')
+let storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // 接收到文件后输出的保存路径（若不存在则需要创建）
     cb(null, './public/uploads/avatar');
@@ -14,11 +14,11 @@ var storage = multer.diskStorage({
     cb(null, Date.now() + "-" + file.originalname);
   }
 });
-var upload = multer({
+let upload = multer({
   storage: storage
 })
 //如果一直出现500报错信息 Node Multer unexpected field 则需要如此操作
-var avatar = upload.single('avatar')
+let avatar = upload.single('avatar')
 router.post('/uploadAvatar', [auth, avatar], async (req, res, next) => {
   let pathArray = req.file.path.split('\\')
   pathArray.shift()
@@ -39,7 +39,7 @@ router.post('/uploadAvatar', [auth, avatar], async (req, res, next) => {
   }
 })
 // 上传模型
-var model = upload.single('model')
+let model = upload.single('model')
 router.post('/uploadModel', [auth, model], async (req, res, next) => {
   let pathArray = req.file.path.split('\\')
   pathArray.shift()

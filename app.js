@@ -5,18 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('module-alias/register')
 // 路由
-// var usersRouter = require('./routes/api/users');
-// var pointsRouter = require('./routes/api/points');
-// var pagesRouter = require('./routes/api/pages');
-// var shuqiansRouter = require('./routes/api/shuqians');
-// var shuqians2Router = require('./routes/api2/shuqians');
-// var modelsRouter = require('./routes/api/models');
-// var filesRouter = require('./routes/api/file/file');
-// var mysqlsRouter = require('./routes/api/mysql');
-
-var users2Router = require('./routes/api2/users');
-var roles2Router = require('./routes/api2/roles');
-var file2Router = require('./routes/api2/file/file');
+var usersRouter = require('./routes/api/users');
+var filesRouter = require('./routes/api/file');
 
 var app = express();
 
@@ -40,17 +30,8 @@ app.all('*', function (req, res, next) {
   else next();
 });
 // 路由配置
-// app.use('/api/user', usersRouter);
-// app.use('/api/point', pointsRouter);
-// app.use('/api/page', pagesRouter);
-// app.use('/api/shuqian', shuqiansRouter);
-// app.use('/api2/shuqian', shuqians2Router);
-// app.use('/api/model', modelsRouter);
-// app.use('/api/file', filesRouter);
-// app.use('/api/mysql', mysqlsRouter);
-app.use('/api2/user', users2Router);
-app.use('/api2/roles', roles2Router);
-app.use('/api2/file', file2Router);
+app.use('/api/user', usersRouter);
+app.use('/api/file', filesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
-var db = require("../config/db")
+let db = require("../config/db")
 // 用户表
-var SchemaUser = new mongoose.Schema({
+let SchemaUser = new mongoose.Schema({
   account: {
     type: String,
     required: true,

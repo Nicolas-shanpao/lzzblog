@@ -1,0 +1,13 @@
+{
+  "name": "node-express",
+  "version": "2.0.0",
+  "description": "node-express 接口文档",
+  "title": "接口文档",
+  "url" : "http://10.25.106.117:3000",
+  "sampleUrl" : "http://10.25.106.117:3000",
+  "url2" : "http://10.25.106.117:3000/apidoc/index.html",
+  "order": [
+    "用户",
+    "xxx"
+  ]
+}

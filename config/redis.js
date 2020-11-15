@@ -1,11 +1,18 @@
-const redis = require('redis')
+const redis = require('redis');
+const baseConfig = require('./development');
 
 // c创建客户端
-
-// const redisClient = redis.createClient(6379, '127.0.0.1')
-const redisClient = redis.createClient({host: '127.0.0.1', port: 6379, detect_buffers: true})
+const redisClient = redis.createClient({
+  host: baseConfig.HOST,
+  port: 6379,
+  detect_buffers: true,
+  auth_pass: 'ACElzz2018.'
+});
+redisClient.on('ready', res => {
+  console.log(res)
+});
 redisClient.on('error', err => {
   console.log(err)
-})
+});
 
-module.exports = redisClient
+module.exports = redisClient;

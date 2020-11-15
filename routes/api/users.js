@@ -10,7 +10,7 @@ let router = express.Router();
  * @apiDescription 用户登录
  * @apiName login
  * @apiGroup User
- * @apiParam {string} account 用户名-g15
+ * @apiParam {string} username 用户名-g15
  * @apiParam {string} password 密码-bim201818
  * @apiSuccess {number} code 具体请看
  * @apiSuccess {json} data
@@ -41,7 +41,7 @@ let router = express.Router();
 router.post('/login', async (req, res) => {
   console.log(req.body);
   const user = await Users.findOne({
-    account: req.body.account
+    username: req.body.username
   })
   if (!user) {
     return res.send({
@@ -77,6 +77,72 @@ router.post('/login', async (req, res) => {
 })
 
 /**
+ * @api {post} /api/user/signup 用户注册
+ * @apiDescription 用户注册
+ * @apiName signup
+ * @apiGroup User
+ * @apiParam {string} username 用户名
+ * @apiParam {string} nikename 昵称
+ * @apiParam {string} password 密码
+ * @apiSuccess {number} code 具体请看
+ * @apiSuccess {json} data
+ * @apiSuccess {string} message
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 OK
+ *  {
+ *  "code": 200,
+ *  "data": {
+ *    "username": "lzz"
+ *  },
+ *  "message": "注册成功！"
+ * }
+ * @apiSampleRequest /api/user/signup
+ * @apiVersion 1.0.0
+ */
+//  用户注册
+router.post('/signup', async (req, res) => {
+  Users.findOne({username: req.body.username}, {}, async (err, val) => {
+    if (err) {
+      console.log('用户数据查找失败！' + err)
+    } else {
+      if (!val) {
+        let newUser = {
+          username: req.body.username,
+          roles: ['admin'],
+          introduction: "",
+          avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+          nikename: req.body.nikename,
+          password: req.body.password
+        };
+        Users.create(newUser, async (err, val) => {
+          if (err) {
+            console.log('用户插入失败！' + err)
+            res.send({
+              code: 401,
+              data: err,
+              message: 'error'
+            })
+          } else {
+            res.send({
+              code: 200,
+              data: {username: val.username},
+              message: '注册成功！'
+            })
+          }
+        })
+      } else {
+        res.send({
+          code: 2001,
+          data: "",
+          message: '用户名已存在',
+          type: 'warning',
+        })
+      }
+    }
+  })
+})
+
+/**
  * @api {get} /api/user/userList 获取用户列表
  * @apiDescription 获取用户列表
  * @apiName userList
@@ -96,7 +162,7 @@ router.post('/login', async (req, res) => {
  *          ],
  *          "isDeleted": 0,
  *          "_id": "5f2290e7cf2a793e64e74201",
- *          "account": "g15",
+ *          "username": "g15",
  *          "introduction": "这个人很懒，啥也没留......",
  *          "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
  *          "nikename": "g15",
@@ -109,7 +175,7 @@ router.post('/login', async (req, res) => {
  *          ],
  *          "isDeleted": 0,
  *          "_id": "5f22910ccf2a793e64e74202",
- *          "account": "g360",
+ *          "username": "g360",
  *          "introduction": "这个人很懒，啥也没留......",
  *          "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
  *          "nikename": "g360",
@@ -156,7 +222,7 @@ router.get('/userList', auth, async (req, res) => {
  *      ],
  *      "isDeleted": 0,
  *      "_id": "5f22910ccf2a793e64e74202",
- *      "account": "g15",
+ *      "username": "g15",
  *      "introduction": "这个人很懒，啥也没留......",
  *      "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
  *      "nikename": "g15",
@@ -180,71 +246,6 @@ router.get('/getUserinfo', auth, async (req, res) => {
 })
 
 /**
- * @api {post} /api/user/signup 用户注册
- * @apiDescription 用户注册
- * @apiName signup
- * @apiGroup User
- * @apiParam {string} account 用户名
- * @apiParam {string} nikename 昵称
- * @apiParam {string} password 密码
- * @apiSuccess {number} code 具体请看
- * @apiSuccess {json} data
- * @apiSuccess {string} message
- * @apiSuccessExample {json} Success-Response:
- * HTTP/1.1 200 OK
- *  {
- *  "code": 200,
- *  "data": {
- *    "account": "lzz"
- *  },
- *  "message": "注册成功！"
- * }
- * @apiSampleRequest /api/user/signup
- * @apiVersion 1.0.0
- */
-//  用户注册
-router.post('/signup', async (req, res) => {
-  Users.findOne({account: req.body.account}, {}, async (err, val) => {
-    if (err) {
-      console.log('用户数据查找失败！' + err)
-    } else {
-      if (!val) {
-        let newUser = {
-          account: req.body.account,
-          roles: ['admin'],
-          introduction: "",
-          avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-          nikename: req.body.nikename,
-          password: req.body.password
-        };
-        Users.create(newUser, async (err, val) => {
-          if (err) {
-            console.log('用户插入失败！' + err)
-            res.send({
-              code: 401,
-              data: err,
-              message: 'error'
-            })
-          } else {
-            res.send({
-              code: 200,
-              data: {account: val.account},
-              message: '注册成功！'
-            })
-          }
-        })
-      } else {
-        res.send({
-          code: 2001,
-          data: "",
-          message: '用户名已存在',
-          type: 'warning',
-        })
-      }
-    }
-  })
-})
-/**
  * @api {post} /api/user/changeUserinfo 修改用户信息
  * @apiDescription 修改用户信息
  * @apiName changeUserinfo
@@ -264,7 +265,7 @@ router.post('/signup', async (req, res) => {
  *  {
  *  "code": 200,
  *  "data": {
- *    "account": "lzz"
+ *    "username": "lzz"
  *  },
  *  "message": "注册成功！"
  * }
@@ -298,6 +299,7 @@ router.post('/changeUserinfo', auth, async (req, res) => {
     )
   }
 })
+
 // javaAPI
 router.post('/javaAPI', async (req, res) => {
   console.log(req);
@@ -305,7 +307,7 @@ router.post('/javaAPI', async (req, res) => {
     // console.log('error:', error); // 返回错误信息
     // console.log('statusCode:', response && response.statusCode); // 返回请求的状态码
     // console.log('body:', body); // 返回回来的数据
-    console.log(JSON.parse(body));
+    console.log(JSON.parse(body))
     let data = JSON.parse(body)
     res.send({
       code: 200,

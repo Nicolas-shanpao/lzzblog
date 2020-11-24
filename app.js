@@ -1,16 +1,18 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
 require('module-alias/register')
 // 路由
 var usersRouter = require('./routes/api/users');
 var filesRouter = require('./routes/api/file');
 var articlesRouter = require('./routes/api/articles');
 var articleTypesRouter = require('./routes/api/article_types');
+let usersRouter = require('./routes/api/users');
+let filesRouter = require('./routes/api/file');
 
-var app = express();
+let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

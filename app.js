@@ -5,12 +5,10 @@ let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 require('module-alias/register')
 // 路由
-var usersRouter = require('./routes/api/users');
-var filesRouter = require('./routes/api/file');
-var articlesRouter = require('./routes/api/articles');
-var articleTypesRouter = require('./routes/api/article_types');
 let usersRouter = require('./routes/api/users');
 let filesRouter = require('./routes/api/file');
+let articlesRouter = require('./routes/api/articles');
+let articleTypesRouter = require('./routes/api/article_types');
 
 let app = express();
 

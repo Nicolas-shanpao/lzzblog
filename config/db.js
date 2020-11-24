@@ -1,11 +1,13 @@
-const mongoose = require("mongoose")
-mongoose.set('useCreateIndex', true)
-mongoose.connect('mongodb://admin:CheccBim2018@10.25.51.41:27017/test', {
+const mongoose = require("mongoose");
+mongoose.set('useCreateIndex', true);
+const baseConfig = require('./development');
+let uri = 'mongodb://admin:ACElzz2018.@' + baseConfig.HOST + ':27017/lzzblog?authSource=admin';
+mongoose.connect(uri, {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
-var db = mongoose.connection;
+let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once("open", function () {
   console.log("数据库连接成功");

@@ -215,7 +215,8 @@ router.post('/signup', async (req, res) => {
           introduction: "",
           avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
           nikename: req.body.nikename,
-          password: req.body.password
+          password: req.body.password,
+          updateAt: req.query.t
         };
         Users.create(newUser, async (err, val) => {
           if (err) {

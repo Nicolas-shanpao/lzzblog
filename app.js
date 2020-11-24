@@ -7,6 +7,8 @@ require('module-alias/register')
 // 路由
 var usersRouter = require('./routes/api/users');
 var filesRouter = require('./routes/api/file');
+var articlesRouter = require('./routes/api/articles');
+var articleTypesRouter = require('./routes/api/article_types');
 
 var app = express();
 
@@ -32,6 +34,8 @@ app.all('*', function (req, res, next) {
 // 路由配置
 app.use('/api/user', usersRouter);
 app.use('/api/file', filesRouter);
+app.use('/api/articles', articlesRouter);
+app.use('/api/articleTypes', articleTypesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
